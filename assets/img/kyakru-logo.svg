@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">KyaKru.com Logo</title>
+  <desc id="desc">Blue and green education admission guidance logo</desc>
+  <rect width="512" height="512" rx="96" fill="#0b5cff"/>
+  <path d="M118 170c0-24 20-44 44-44h188c24 0 44 20 44 44v188c0 24-20 44-44 44H162c-24 0-44-20-44-44V170z" fill="#fff"/>
+  <path d="M174 181h164v42H174zM174 245h108v42H174zM174 309h164v42H174z" fill="#0b5cff"/>
+  <circle cx="345" cy="266" r="64" fill="#00b894"/>
+  <path d="M318 266l18 18 38-43" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
