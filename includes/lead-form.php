@@ -26,7 +26,16 @@
                 <option value="<?= e($city) ?>"><?= e($city) ?></option>
             <?php endforeach; ?>
         </select>
+        <input type="text" name="qualification" placeholder="Current Qualification">
+        <select name="preferred_mode"><option value="">Preferred Mode</option><option>Online</option><option>Offline</option><option>Either</option></select>
+        <input type="text" name="preferred_college" placeholder="Preferred College (optional)">
         <textarea name="message" placeholder="Tell us your marks, budget or preferred college"></textarea>
+        <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
+        <input type="hidden" name="referrer" value="<?= e($_SERVER['HTTP_REFERER'] ?? '') ?>">
+        <input type="hidden" name="utm_source" value="<?= e($_GET['utm_source'] ?? '') ?>">
+        <input type="hidden" name="utm_medium" value="<?= e($_GET['utm_medium'] ?? '') ?>">
+        <input type="hidden" name="utm_campaign" value="<?= e($_GET['utm_campaign'] ?? '') ?>">
+        <label class="consent"><input type="checkbox" name="consent" value="1" required> I agree to be contacted about college admission guidance.</label>
         <button class="btn" type="submit">Submit Enquiry</button>
     </form>
 </div>
