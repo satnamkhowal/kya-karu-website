@@ -6,10 +6,14 @@
     <?php if (!empty($_GET['success'])): ?>
         <div class="alert">Thank you. Your enquiry has been submitted successfully.</div>
     <?php endif; ?>
+    <?php if (!empty($_GET['error'])): ?>
+        <div class="alert error-alert">Please enter a valid Indian mobile number and check all required fields.</div>
+    <?php endif; ?>
     <form class="form-grid" action="<?= e($basePath ?? '') ?>lead-submit.php" method="post">
         <input type="text" name="name" placeholder="Student Name" required>
-        <input type="tel" name="phone" placeholder="Mobile Number" required>
+        <input type="tel" name="phone" placeholder="10-digit Mobile Number" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" required>
         <input type="email" name="email" placeholder="Email Address">
+        <input class="form-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <select name="course" required>
             <option value="">Select Course</option>
             <?php foreach ($courses as $course): ?>
