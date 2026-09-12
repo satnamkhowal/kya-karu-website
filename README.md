@@ -10,6 +10,11 @@ SEO optimized PHP + MySQL website for college admission enquiries and lead captu
 4. Click install. It will create `config/database.php` and required tables.
 5. Delete or rename `install.php` after successful setup.
 
+The installer automatically locks itself after writing `config/database.php`.
+It creates the lead, CRM admin, activity and settings tables and the first CRM
+administrator. Hostinger databases must be created in hPanel first; the installer
+then connects to that database and creates all required tables.
+
 ## Important Pages
 
 - `/index.php` - Home page
@@ -18,3 +23,12 @@ SEO optimized PHP + MySQL website for college admission enquiries and lead captu
 - `/admission-guidance.php` - Counselling page
 - `/lead-submit.php` - Lead form handler
 - `/admin/leads.php` - Simple lead view
+- `/admin/login.php` - Secure lead CRM login
+
+## P1 Jaipur landing pages
+
+- `/bca-colleges-in-jaipur.php`
+- `/mca-colleges-in-jaipur.php`
+- `/bba-colleges-in-jaipur.php`
+- `/mba-colleges-in-jaipur.php`
+- `/engineering-colleges-in-jaipur.php`
