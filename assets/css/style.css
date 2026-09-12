@@ -271,6 +271,26 @@ textarea {
   color: var(--primary-dark);
 }
 
+.college-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.college-card a {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.consent { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 14px; }
+.consent input { width: auto; margin-top: 5px; }
+.auth-box { max-width: 520px; margin: 30px auto; }
+.stage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.stage-grid .card { display: flex; justify-content: space-between; gap: 8px; padding: 14px; }
+.stage-grid span { color: var(--primary); font-size: 20px; font-weight: 800; }
+.crm-form { min-width: 220px; display: grid; gap: 6px; }
+.crm-form .btn { padding: 8px 10px; }
+
 .badge {
   display: inline-flex;
   padding: 5px 10px;
