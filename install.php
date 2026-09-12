@@ -13,9 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $database = trim($_POST['database'] ?? '');
     $username = trim($_POST['username'] ?? '');
     $password = (string) ($_POST['password'] ?? '');
+    $adminEmail = trim($_POST['admin_email'] ?? '');
+    $adminPassword = (string) ($_POST['admin_password'] ?? '');
 
-    if ($host === '' || $database === '' || $username === '') {
-        $error = 'Host, database name and username are required.';
+    if ($host === '' || $database === '' || $username === '' || !filter_var($adminEmail, FILTER_VALIDATE_EMAIL) || strlen($adminPassword) < 10) {
+        $error = 'Database details, a valid admin email and an admin password of at least 10 characters are required.';
     } else {
         try {
             // Shared hosting creates the database in its control panel first.
@@ -32,9 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     email VARCHAR(160) NULL,
                     course VARCHAR(120) NOT NULL,
                     city VARCHAR(120) NOT NULL,
+                    qualification VARCHAR(120) NULL,
+                    preferred_mode VARCHAR(40) NULL,
+                    preferred_college VARCHAR(180) NULL,
                     message TEXT NULL,
                     status VARCHAR(40) NOT NULL DEFAULT 'New',
                     source_page VARCHAR(255) NULL,
+                    referrer VARCHAR(500) NULL,
+                    utm_source VARCHAR(120) NULL,
+                    utm_medium VARCHAR(120) NULL,
+                    utm_campaign VARCHAR(160) NULL,
+                    consent_at DATETIME NULL,
                     created_at DATETIME NOT NULL,
                     updated_at DATETIME NULL,
                     INDEX idx_phone (phone),
@@ -44,12 +54,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             ");
             $pdo->exec("
+                CREATE TABLE IF NOT EXISTS admins (
+                    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    email VARCHAR(190) NOT NULL UNIQUE,
+                    password_hash VARCHAR(255) NOT NULL,
+                    created_at DATETIME NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            ");
+            $pdo->exec("
+                CREATE TABLE IF NOT EXISTS lead_activities (
+                    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    lead_id INT UNSIGNED NOT NULL,
+                    activity_type VARCHAR(60) NOT NULL,
+                    note TEXT NULL,
+                    created_at DATETIME NOT NULL,
+                    INDEX idx_lead (lead_id),
+                    CONSTRAINT fk_activity_lead FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            ");
+            $pdo->exec("
                 CREATE TABLE IF NOT EXISTS settings (
                     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                     setting_key VARCHAR(100) NOT NULL UNIQUE,
                     setting_value TEXT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             ");
+            $admin = $pdo->prepare('INSERT INTO admins (email, password_hash, created_at) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash)');
+            $admin->execute([$adminEmail, password_hash($adminPassword, PASSWORD_DEFAULT)]);
 
             if (!is_dir(__DIR__ . '/config')) {
                 mkdir(__DIR__ . '/config', 0755, true);
@@ -106,6 +137,8 @@ require __DIR__ . '/includes/header.php';
                     <input type="text" name="database" placeholder="Database Name" required>
                     <input type="text" name="username" placeholder="Database Username" required>
                     <input type="password" name="password" placeholder="Database Password">
+                    <input type="email" name="admin_email" placeholder="CRM Admin Email" required>
+                    <input type="password" name="admin_password" placeholder="CRM Admin Password (10+ characters)" minlength="10" required>
                     <button class="btn" type="submit">Create Database Tables</button>
                 </form>
             </div>
