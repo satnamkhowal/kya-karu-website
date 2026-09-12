@@ -14,6 +14,15 @@ require __DIR__ . '/includes/data.php';
         </div>
     </section>
     <section class="section">
+        <div class="container section-head"><span class="badge">Priority Admissions</span><h2>Explore Jaipur colleges by course</h2><div class="grid-3">
+            <a class="card" href="bca-colleges-in-jaipur.php"><h3>BCA Colleges</h3><p>Computer applications after 12th</p></a>
+            <a class="card" href="mca-colleges-in-jaipur.php"><h3>MCA Colleges</h3><p>Postgraduate computer applications</p></a>
+            <a class="card" href="bba-colleges-in-jaipur.php"><h3>BBA Colleges</h3><p>Undergraduate management</p></a>
+            <a class="card" href="mba-colleges-in-jaipur.php"><h3>MBA Colleges</h3><p>Management and specializations</p></a>
+            <a class="card" href="engineering-colleges-in-jaipur.php"><h3>Engineering Colleges</h3><p>B.Tech and engineering programmes</p></a>
+        </div></div>
+    </section>
+    <section class="section soft">
         <div class="container grid-3">
             <?php foreach ($colleges as $college): ?>
                 <article class="card">
