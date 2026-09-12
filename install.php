@@ -1,6 +1,12 @@
 <?php
 $message = '';
 $error = '';
+$configPath = __DIR__ . '/config/database.php';
+
+if (file_exists($configPath)) {
+    http_response_code(403);
+    exit('KyaKru.com is already installed. Remove config/database.php only if you intentionally want to reinstall it.');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $host = trim($_POST['host'] ?? 'localhost');
@@ -12,11 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Host, database name and username are required.';
     } else {
         try {
-            $pdo = new PDO('mysql:host=' . $host . ';charset=utf8mb4', $username, $password, [
+            // Shared hosting creates the database in its control panel first.
+            $dsn = 'mysql:host=' . $host . ';dbname=' . $database . ';charset=utf8mb4';
+            $pdo = new PDO($dsn, $username, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
-            $pdo->exec('CREATE DATABASE IF NOT EXISTS `' . str_replace('`', '``', $database) . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
-            $pdo->exec('USE `' . str_replace('`', '``', $database) . '`');
             $pdo->exec("
                 CREATE TABLE IF NOT EXISTS leads (
                     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -65,10 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $config .= "    return \$pdo;\n";
             $config .= "}\n";
 
-            file_put_contents(__DIR__ . '/config/database.php', $config);
-            $message = 'Installation complete. Database tables created and config/database.php saved. For security, delete install.php now.';
+            if (file_put_contents($configPath, $config, LOCK_EX) === false) {
+                throw new RuntimeException('Could not write config/database.php.');
+            }
+            @chmod($configPath, 0640);
+            $message = 'Installation complete. Database tables were created and the configuration was saved. This installer is now locked automatically.';
         } catch (Throwable $e) {
-            $error = $e->getMessage();
+            error_log('KyaKru installer error: ' . $e->getMessage());
+            $error = 'Installation failed. Check the database host, database name, username, password and config folder permissions.';
         }
     }
 }

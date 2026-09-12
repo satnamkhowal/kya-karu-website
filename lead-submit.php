@@ -17,9 +17,21 @@ $email = trim($_POST['email'] ?? '');
 $course = trim($_POST['course'] ?? '');
 $city = trim($_POST['city'] ?? '');
 $message = trim($_POST['message'] ?? '');
+$honeypot = trim($_POST['website'] ?? '');
 
-if ($name === '' || $phone === '' || $course === '' || $city === '') {
-    exit('Required fields are missing.');
+if ($honeypot !== '') {
+    header('Location: index.php?success=1#enquiry');
+    exit;
+}
+
+if ($name === '' || $course === '' || $city === '' || !preg_match('/^[6-9][0-9]{9}$/', preg_replace('/\D+/', '', $phone))) {
+    header('Location: index.php?error=1#enquiry');
+    exit;
+}
+
+if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    header('Location: index.php?error=1#enquiry');
+    exit;
 }
 
 $stmt = db()->prepare('INSERT INTO leads (name, phone, email, course, city, message, source_page, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())');
@@ -33,5 +45,5 @@ $stmt->execute([
     $_SERVER['HTTP_REFERER'] ?? 'website',
 ]);
 
-header('Location: index.php?success=1#enquiry');
+header('Location: index.php?success=1#enquiry', true, 303);
 exit;
