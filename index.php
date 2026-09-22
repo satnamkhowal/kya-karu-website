@@ -66,5 +66,14 @@ require __DIR__ . '/includes/data.php';
             </div>
         </div>
     </section>
+    <section class="section soft">
+        <div class="container">
+            <div class="section-head">
+                <span class="badge">Jaipur Visitor Resource</span>
+                <h2>Planning a Jaipur college visit?</h2>
+                <p>Students and families coming to Jaipur can explore <a href="https://swiggywala.com/" target="_blank" rel="noopener">Swiggy Wala Jaipur tours and travel services</a> for local sightseeing, cab travel and Rajasthan trip planning.</p>
+            </div>
+        </div>
+    </section>
 </main>
 <?php require __DIR__ . '/includes/footer.php'; ?>
