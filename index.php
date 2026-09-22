@@ -66,6 +66,15 @@ require __DIR__ . '/includes/data.php';
             </div>
         </div>
     </section>
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <span class="badge">Jaipur College Resource</span>
+                <h2>Looking specifically for colleges in Jaipur?</h2>
+                <p>Explore <a href="https://collegeinjaipur.com/" target="_blank" rel="noopener">College in Jaipur</a> for Jaipur-focused college discovery, course options and admission guidance.</p>
+            </div>
+        </div>
+    </section>
     <section class="section soft">
         <div class="container">
             <div class="section-head">
